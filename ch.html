@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bean & Brew Coffee House</title>
+  <meta name="description" content="Bean & Brew — A cozy neighborhood coffee house. Fresh brews, artisan pastries, and warm vibes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0e0b09;
+      --bg-2:#17120f;
+      --text:#f3eee9;
+      --muted:#c5b7ad;
+      --accent:#c17b3f; /* caramel */
+      --accent-2:#7a4c28; /* mocha */
+      --card:#1f1814;
+      --success:#2ecc71;
+      --danger:#ff6b6b;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;scroll-behavior:smooth}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{width:min(1150px,92%);margin-inline:auto}
+    .btn{display:inline-flex;align-items:center;gap:.6rem;background:var(--accent);color:#120b07;border:none;padding:.9rem 1.15rem;border-radius:999px;font-weight:700;cursor:pointer;box-shadow:var(--shadow);transition:transform .15s ease,opacity .15s ease}
+    .btn:hover{transform:translateY(-2px);opacity:.95}
+    .btn--ghost{background:transparent;border:1px solid var(--accent);color:var(--text)}
+    .tag{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+    /* Navbar */
+    .nav{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(14,11,9,.9),rgba(14,11,9,.65),transparent)}
+    .nav__inner{display:flex;align-items:center;justify-content:space-between;padding:1rem 0}
+    .brand{display:flex;gap:.75rem;align-items:center;font-weight:800}
+    .brand__logo{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 30%,#f5d7b1, #8b4f2f 55%, #2b1a13 100%);box-shadow:0 6px 14px rgba(0,0,0,.35)}
+    .brand__name{font-family:"Playfair Display",serif;font-size:1.35rem;letter-spacing:.6px}
+    .nav__links{display:flex;gap:1.1rem}
+    .nav__links a{padding:.45rem .85rem;border-radius:999px}
+    .nav__links a:hover{background:rgba(193,123,63,.16)}
+
+    /* Hero */
+    .hero{position:relative;isolation:isolate}
+    .hero__bg{position:absolute;inset:0;z-index:-1;background:radial-gradient(80% 60% at 70% 20%, rgba(193,123,63,.25), transparent 60%), radial-gradient(60% 50% at 20% 80%, rgba(122,76,40,.35), transparent 60%), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="%232b1a13"/><stop offset="1" stop-color="%2317100d"/></linearGradient></defs><rect width="100%" height="100%" fill="url(%23g)"/></svg>') center/cover no-repeat}
+    .hero__inner{display:grid;grid-template-columns:1.1fr .9fr;gap:2rem;align-items:center;padding:6rem 0 4rem}
+    .headline{font-family:"Playfair Display",serif;font-size:clamp(2rem,5vw,3.4rem);line-height:1.1;margin:0 0 1rem}
+    .sub{color:var(--muted);max-width:60ch}
+    .hero__cta{margin-top:1.35rem;display:flex;gap:.8rem;flex-wrap:wrap}
+    .cup{
+      width:min(420px,100%);aspect-ratio:4/3;border-radius:var(--radius);background:conic-gradient(from 220deg at 70% 40%, #ffeed9, #9b5730 30%, #2a1812 62%, #120a07 90%);
+      position:relative;overflow:hidden;box-shadow:var(--shadow)
+    }
+    .cup::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 40% at 50% 10%, rgba(255,255,255,.2), transparent 60%)}
+
+    /* Sections */
+    section{padding:4rem 0}
+    .section__head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:1.5rem}
+    .section__title{font-family:"Playfair Display",serif;font-size:2rem}
+
+    /* Menu */
+    .grid{display:grid;gap:1rem}
+    .menu{grid-template-columns:repeat(12,1fr)}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:1rem;box-shadow:var(--shadow)}
+    .menu__item{grid-column:span 4;display:flex;gap:1rem;align-items:center}
+    .menu__thumb{width:70px;height:70px;border-radius:12px;background:linear-gradient(145deg,#5a321b,#29150e);display:grid;place-items:center;flex-shrink:0}
+    .menu__title{font-weight:700}
+    .price{margin-left:auto;font-weight:700;color:#f5d7b1}
+
+    /* Specials */
+    .specials{grid-template-columns:repeat(3,1fr)}
+    .special{display:flex;flex-direction:column;gap:.6rem}
+    .special .tag{color:#f5d7b1}
+
+    /* Gallery */
+    .gallery{grid-template-columns:repeat(6,1fr)}
+    .gallery img{border-radius:14px;aspect-ratio:1/1;object-fit:cover}
+
+    /* About */
+    .about{display:grid;grid-template-columns:1.1fr .9fr;gap:1.5rem}
+    .about__box{background:linear-gradient(145deg, rgba(193,123,63,.08), rgba(122,76,40,.08));border:1px solid rgba(193,123,63,.25);border-radius:var(--radius);padding:1.25rem}
+
+    /* Hours & Contact */
+    .cols-2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+    .list{list-style:none;padding:0;margin:0;display:grid;gap:.6rem}
+    .list li{display:flex;justify-content:space-between;border-bottom:1px dashed rgba(255,255,255,.08);padding:.5rem 0}
+
+    /* Footer */
+    footer{padding:2.5rem 0 4rem;border-top:1px solid rgba(255,255,255,.08);color:var(--muted)}
+    .foot{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero__inner{grid-template-columns:1fr}
+      .about{grid-template-columns:1fr}
+      .menu__item{grid-column:span 6}
+      .specials{grid-template-columns:1fr 1fr}
+      .cols-2{grid-template-columns:1fr}
+    }
+    @media (max-width: 600px){
+      .nav__links{display:none}
+      .menu__item{grid-column:span 12}
+      .specials{grid-template-columns:1fr}
+      .gallery{grid-template-columns:repeat(3,1fr)}
+      .hero__inner{padding:4rem 0 2.5rem}
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="nav" aria-label="Primary">
+    <div class="container nav__inner">
+      <a class="brand" href="#home" aria-label="Bean and Brew Home">
+        <span class="brand__logo" aria-hidden="true">☕</span>
+        <span class="brand__name">Bean & Brew</span>
+      </a>
+      <nav class="nav__links" aria-label="Site links">
+        <a href="#menu">Menu</a>
+        <a href="#specials">Specials</a>
+        <a href="#about">About</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#visit">Visit</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="home" class="hero" aria-label="Intro">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="container hero__inner">
+      <div>
+        <h1 class="headline">Ghar jaisi garmahat, <br/> café jaisa swaad.</h1>
+        <p class="sub">
+          Bean & Brew mein aapko milega freshly-roasted coffee, artisan pastries, aur cozy vibes.
+          Doston ke saath baithiye, kaam kijiye, ya bas ek perfect cup enjoy kijiye.
+        </p>
+        <div class="hero__cta">
+          <a href="#menu" class="btn" aria-label="View menu">View Menu</a>
+          <a href="#visit" class="btn btn--ghost" aria-label="Get directions">Get Directions</a>
+        </div>
+      </div>
+      <div class="cup" role="img" aria-label="Illustration of coffee cup"></div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu" aria-label="Menu">
+    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title">Menu</h2>
+        <span class="tag">Signature Brews • Classics • Bites</span>
+      </div>
+      <div class="grid menu">
+        <!-- Drinks -->
+        <article class="card menu__item">
+          <div class="menu__thumb" aria-hidden="true">🫘</div>
+          <div>
+            <div class="menu__title">Espresso</div>
+            <div class="tag">Rich & bold single shot</div>
+          </div>
+          <div class="price">₹120</div>
+        </article>
+        <article class="card menu__item">
+          <div class="menu__thumb" aria-hidden="true">🥛</div>
+          <div>
+            <div class="menu__title">Cappuccino</div>
+            <div class="tag">Silky foam, balanced</div>
+          </div>
+          <div class="price">₹160</div>
+        </article>
+        <article class="card menu__item">
+          <div class="menu__thumb" aria-hidden="true">🍫</div>
+          <div>
+            <div class="menu__title">Mocha</div>
+            <div class="tag">Chocolate + espresso</div>
+          </div>
+          <div class="price">₹190</div>
+        </article>
+        <article class="card menu__item">
+          <div class="menu__thumb" aria-hidden="true">🧊</div>
+          <div>
+            <div class="menu__title">Iced Latte</div>
+            <div class="tag">Cold, smooth, refreshing</div>
+          </div>
+          <div class="price">₹180</div>
+        </article>
+        <article class="card menu__item">
+          <div class="menu__thumb" aria-hidden="true">🍵</div>
+          <div>
+            <div class="menu__title">Matcha Latte</div>
+            <div class="tag">Ceremonial grade</div>
+          </div>
+          <div class="price">₹210</div>
+        </article>
+        <article class="card menu__item">
+          <div class="menu__thumb" aria-hidden="true">🥐</div>
+          <div>
+            <div class="menu__title">Butter Croissant</div>
+            <div class="tag">Flaky & fresh-baked</div>
+          </div>
+          <div class="price">₹130</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPECIALS -->
+  <section id="specials" aria-label="Specials">
+    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title">This Week’s Specials</h2>
+        <span class="tag">Limited time only</span>
+      </div>
+      <div class="grid specials">
+        <article class="card special">
+          <span class="tag">New</span>
+          <h3>Caramel Cold Brew</h3>
+          <p class="sub">12-hour steeped brew with house caramel. Lightly sweet, ultra-smooth.</p>
+          <div class="price">₹200</div>
+        </article>
+        <article class="card special">
+          <span class="tag">Hot</span>
+          <h3>Masala Chai Latte</h3>
+          <p class="sub">Classic Indian spices with velvety milk. Perfect monsoon hug.</p>
+          <div class="price">₹170</div>
+        </article>
+        <article class="card special">
+          <span class="tag">Bite</span>
+          <h3>Almond Biscotti</h3>
+          <p class="sub">Crunchy, dunkable, baked in-house. Pair with espresso.</p>
+          <div class="price">₹90</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" aria-label="About">
+    <div class="container about">
+      <div class="about__box">
+        <h2 class="section__title">Hamari Kahaani</h2>
+        <p class="sub">Hum local farms se ethically-sourced beans lekar roast karte hain. Har cup mein quality aur pyaar — yahi hamara vaada.</p>
+        <ul class="list" aria-label="Highlights">
+          <li><span>100% Arabica</span><span>Single-origin</span></li>
+          <li><span>Wi‑Fi</span><span>Free & Fast</span></li>
+          <li><span>Workspace</span><span>Cozy corners</span></li>
+          <li><span>Sustainability</span><span>Compostable cups</span></li>
+        </ul>
+      </div>
+      <div class="about__box">
+        <h2 class="section__title">Catering & Events</h2>
+        <p class="sub">Office ke liye bulk orders, pop-up carts, ya private events — hum sab manage karte hain. Neeche form se details bhejiye.</p>
+        <a href="#contact" class="btn" aria-label="Go to contact form">Get a Quote</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY (placeholder squares) -->
+  <section id="gallery" aria-label="Gallery">
+    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title">Vibes & Brews</h2>
+        <span class="tag">A glimpse inside</span>
+      </div>
+      <div class="grid gallery">
+        <!-- 6 placeholder squares with gradients -->
+        <img alt="Latte art" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='%23f5d7b1'/><stop offset='1' stop-color='%238b4f2f'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23g)'/></svg>">
+        <img alt="Cozy seating" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='%237a4c28'/><stop offset='1' stop-color='%23120a07'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23g)'/></svg>">
+        <img alt="Pastries" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='%23c17b3f'/><stop offset='1' stop-color='%232b1a13'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23g)'/></svg>">
+        <img alt="Roaster" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='%232b1a13'/><stop offset='1' stop-color='%2317100d'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23g)'/></svg>">
+        <img alt="Team" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='%23f3eee9'/><stop offset='1' stop-color='%237a4c28'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23g)'/></svg>">
+        <img alt="Pour over" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='%23c5b7ad'/><stop offset='1' stop-color='%23120a07'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23g)'/></svg>">
+      </div>
+    </div>
+  </section>
+
+  <!-- VISIT -->
+  <section id="visit" aria-label="Visit">
+    <div class="container cols-2">
+      <div>
+        <h2 class="section__title">Hours</h2>
+        <ul class="list" aria-label="Opening hours">
+          <li><span>Mon – Thu</span><span>8:00 AM – 9:00 PM</span></li>
+          <li><span>Fri</span><span>8:00 AM – 10:00 PM</span></li>
+          <li><span>Sat</span><span>9:00 AM – 10:00 PM</span></li>
+          <li><span>Sun</span><span>9:00 AM – 8:00 PM</span></li>
+        </ul>
+        <h3 style="margin-top:1rem">Address</h3>
+        <p class="sub">123, Market Road, Your City, India 110001</p>
+        <a class="btn" href="https://maps.google.com/?q=Bean%20%26%20Brew" target="_blank" rel="noopener">Open in Maps</a>
+      </div>
+      <div>
+        <h2 class="section__title">Contact</h2>
+        <form id="contact" class="card" onsubmit="event.preventDefault(); showToast('Thanks! We will contact you soon.')" aria-label="Contact form">
+          <label class="tag" for="name">Name</label>
+          <input id="name" required placeholder="Your name" class="input" />
+          <label class="tag" for="phone">Phone</label>
+          <input id="phone" required placeholder="Your phone" class="input" />
+          <label class="tag" for="msg">Message</label>
+          <textarea id="msg" rows="4" placeholder="How can we help?" class="input"></textarea>
+          <button class="btn" type="submit" aria-label="Send message">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container foot">
+      <div class="brand"><span class="brand__logo" aria-hidden="true">☕</span><span class="brand__name">Bean & Brew</span></div>
+      <div>© <span id="year"></span> Bean & Brew • All rights reserved</div>
+      <div>
+        <a href="#home" class="btn btn--ghost" aria-label="Back to top">↑ Back to top</a>
+      </div>
+    </div>
+  </footer>
+
+  <style>
+    /* simple form inputs */
+    .input{width:100%;margin:.35rem 0 1rem;background:#120a07;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:.85rem;color:var(--text)}
+    .input:focus{outline:2px solid rgba(193,123,63,.45)}
+  </style>
+
+  <script>
+    // Year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Tiny toast function for demo contact form
+    function showToast(text){
+      const t=document.createElement('div');
+      t.textContent=text; t.setAttribute('role','status');
+      Object.assign(t.style,{
+        position:'fixed',left:'50%',bottom:'24px',transform:'translateX(-50%)',
+        background:'var(--accent)',color:'#120b07',padding:'12px 16px',borderRadius:'999px',
+        boxShadow:'var(--shadow)',fontWeight:'700',zIndex:9999
+      });
+      document.body.appendChild(t);
+      setTimeout(()=>t.remove(),2600);
+    }
+  </script>
+</body>
+</html>
